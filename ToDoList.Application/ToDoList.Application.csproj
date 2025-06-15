@@ -2,7 +2,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ToDoList.Domain\ToDoList.Domain.csproj" />
-      <ProjectReference Include="..\ToDoList.Infrastructure\ToDoList.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.5.0" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     </ItemGroup>
 
     <PropertyGroup>
