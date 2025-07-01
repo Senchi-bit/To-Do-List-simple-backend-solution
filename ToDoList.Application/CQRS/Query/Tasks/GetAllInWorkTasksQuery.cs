@@ -11,12 +11,12 @@ public class GetAllInWorkTasksQuery : IRequest<List<ToDoTaskDto>>
 {
 }
 
-public class GetAllInWorkTasksQueryHandler(ILazyLoadingContext _context) 
+public class GetAllInWorkTasksQueryHandler(ILazyLoadingContext context) 
     : IRequestHandler<GetAllInWorkTasksQuery, List<ToDoTaskDto>>
 {
     public async Task<List<ToDoTaskDto>> Handle(GetAllInWorkTasksQuery request, CancellationToken cancellationToken)
     {
-        var inWorkTasks = await _context.Tasks
+        var inWorkTasks = await context.Tasks
             .Where(x => x.TaskState == ToDoTaskStates.InWork)
             .ProjectToType<ToDoTaskDto>()
             .ToListAsync(cancellationToken);

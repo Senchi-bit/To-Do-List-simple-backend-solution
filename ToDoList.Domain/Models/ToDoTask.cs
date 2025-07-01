@@ -12,6 +12,7 @@ public class ToDoTask
     
     public bool IsCompleted { get; set; }
     
+    public int TaskStateId { get; set; }
     public ToDoTaskStates TaskState { get; set; }
 }
 

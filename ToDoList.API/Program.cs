@@ -1,5 +1,6 @@
 using Scalar.AspNetCore;
 using ToDoList.API;
+using ToDoList.API.ExceptionHandler;
 using ToDoList.API.Extensions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
