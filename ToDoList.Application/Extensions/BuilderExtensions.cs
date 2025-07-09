@@ -8,9 +8,6 @@ public static class BuilderExtensions
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddMediatR(configuration =>
-        {
-            configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-        });
+        
     }
 }
