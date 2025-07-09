@@ -1,17 +1,17 @@
-﻿using MediatR;
-using ToDoList.Application.Interfaces.Context;
+﻿using ToDoList.Application.Interfaces.Context;
+using ToDoList.Application.Interfaces.CQRS;
 using ToDoList.Domain.Enumerations;
 using ToDoList.Domain.Models;
 
 namespace ToDoList.Application.CQRS.Command.Tasks;
 
-public class CreateTaskCommand : IRequest<int>
+public class CreateTaskCommand : ICommand<int>
 {
     public string Title { get; set; }
     public string Description { get; set; }
 }
 
-public class CreateTaskCommandHandler(ILazyLoadingContext _context) : IRequestHandler<CreateTaskCommand, int>
+public class CreateTaskCommandHandler(ILazyLoadingContext _context) : ICommandHandler<CreateTaskCommand, int>
 {
     public async Task<int> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {

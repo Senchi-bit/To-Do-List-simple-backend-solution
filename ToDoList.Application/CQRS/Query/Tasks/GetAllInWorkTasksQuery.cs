@@ -1,18 +1,18 @@
 ﻿using Mapster;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ToDoList.Application.Interfaces.Context;
+using ToDoList.Application.Interfaces.CQRS;
 using ToDoList.Domain.Enumerations;
 using ToDoList.Domain.Models;
 
 namespace ToDoList.Application.CQRS.Query.Tasks;
 
-public class GetAllInWorkTasksQuery : IRequest<List<ToDoTaskDto>>
+public class GetAllInWorkTasksQuery : IQuery<List<ToDoTaskDto>>
 {
 }
 
 public class GetAllInWorkTasksQueryHandler(ILazyLoadingContext context) 
-    : IRequestHandler<GetAllInWorkTasksQuery, List<ToDoTaskDto>>
+    : IQueryHandler<GetAllInWorkTasksQuery, List<ToDoTaskDto>>
 {
     public async Task<List<ToDoTaskDto>> Handle(GetAllInWorkTasksQuery request, CancellationToken cancellationToken)
     {

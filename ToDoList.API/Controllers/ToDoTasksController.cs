@@ -1,19 +1,20 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ToDoList.Application.CQRS.Command.Tasks;
 using ToDoList.Application.CQRS.Query.Tasks;
+using ToDoList.Application.Interfaces.CQRS;
+using ToDoList.Domain.Models;
+using Void = ToDoList.Application.Models.Void;
 
 namespace ToDoList.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class ToDoTasksController(ISender sender) : Controller
+public class ToDoTasksController(IQuerySender querySender, ICommandSender commandSender) : Controller
 {
-    private readonly ISender _sender = sender;
 
     [HttpGet("AllTasks")]
     public async Task<IActionResult> GetAllTasks([FromQuery]GetAllTasksQuery query, CancellationToken cancellationToken)
     {
-        var tasks = await _sender.Send(query, cancellationToken);
+        var tasks = await querySender.Send<GetAllTasksQuery, List<ToDoTaskDto>>(query, cancellationToken);
         return Ok(tasks);
     }
 
@@ -21,14 +22,14 @@ public class ToDoTasksController(ISender sender) : Controller
     public async Task<IActionResult> GetAllInWorkTasks([FromQuery] GetAllInWorkTasksQuery query,
         CancellationToken cancellationToken)
     {
-        var tasks = await _sender.Send(query, cancellationToken);
+        var tasks = await querySender.Send<GetAllInWorkTasksQuery, List<ToDoTaskDto>>(query, cancellationToken);
         return Ok(tasks);
     }
 
     [HttpPost("CreateTask")]
     public async Task<IActionResult> Create([FromBody]CreateTaskCommand command, CancellationToken cancellationToken)
     {
-        var taskId = await _sender.Send(command, cancellationToken);
+        var taskId = await commandSender.Send<CreateTaskCommand, int>(command, cancellationToken);
         return Ok(taskId);
     }
 
@@ -36,15 +37,15 @@ public class ToDoTasksController(ISender sender) : Controller
     public async Task<IActionResult> UpdateTask([FromBody] UpdateMainInformTaskCommand command,
         CancellationToken cancellationToken)
     {
-        await _sender.Send(command, cancellationToken);
+        await commandSender.Send<UpdateMainInformTaskCommand, Void>(command, cancellationToken);
         return NoContent();
     }
 
-    [HttpPatch("CompleteTask")]
-    public async Task<IActionResult> CompleteTask([FromBody] SwitchTaskStatusCommand command,
+    [HttpPatch("SwitchTaskStatus")]
+    public async Task<IActionResult> SwitchTaskStatus([FromBody] SwitchTaskStatusCommand command,
         CancellationToken cancellationToken)
     {
-        await _sender.Send(command, cancellationToken);
+        await commandSender.Send<SwitchTaskStatusCommand, Void>(command, cancellationToken);
         return NoContent();
     }
 
@@ -52,7 +53,7 @@ public class ToDoTasksController(ISender sender) : Controller
     public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskCommand command,
         CancellationToken cancellationToken)
     {
-        await _sender.Send(command, cancellationToken);
+        await commandSender.Send<DeleteTaskCommand, Void>(command, cancellationToken);
         return NoContent();
     }
 }
